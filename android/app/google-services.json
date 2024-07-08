@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "865510799447",
+    "project_id": "notesapp-flutlearn",
+    "storage_bucket": "notesapp-flutlearn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865510799447:android:961f67535b01a392ad8b12",
+        "android_client_info": {
+          "package_name": "com.flulearn.notesapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnwW8mjI0FXVuagnEhvk_VusREmUbI478"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
