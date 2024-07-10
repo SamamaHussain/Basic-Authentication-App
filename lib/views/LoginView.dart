@@ -11,9 +11,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-
-
-late final TextEditingController _email;
+  late final TextEditingController _email;
   late final TextEditingController _password;
 
   @override
@@ -21,8 +19,6 @@ late final TextEditingController _email;
     print("Pakistan");
     _email = TextEditingController();
     _password = TextEditingController();
-
-    
     super.initState();
   }
 
@@ -30,110 +26,104 @@ late final TextEditingController _email;
   void dispose() {
     _email.dispose();
     _password.dispose();
-
     super.dispose();
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pakistan Zindabad Login Here"),
-        backgroundColor: Colors.blue,
-        titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+        title: const Text("Login"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-
-        child: FutureBuilder(
-          future: Firebase.initializeApp( 
-            options: DefaultFirebaseOptions.currentPlatform,
-                    ),
-                    builder: (context, snapshot) {
-
-                      switch (snapshot.connectionState){
-                        case ConnectionState.done:
-                        
-                         return Column(
-            children: [
-              TextField(
-                controller: _email,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                enableSuggestions: false,
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FutureBuilder(
+              future: Firebase.initializeApp(
+                options: DefaultFirebaseOptions.currentPlatform,
               ),
-              SizedBox(height: 20), // Add some space between the text fields
-              TextField(
-                controller: _password,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-                enableSuggestions: false,
-                autocorrect: false,
-                obscureText: false,
-              ),
-              SizedBox(height: 20),
-              Center(
-                child: TextButton(
-                  onPressed: () async {
-                    
-          
-                    final email = _email.text;
-                    final password = _password.text;
-
-                    try {
-                      final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-                    }
-
-                    on FirebaseAuthException catch(e){
-
-                      print(e.code);
-                      if (e.code=='invalid-email'){
-                        print('Your Email is Invalid');
-                      }
-
-                      else if(e.code=='wrong-password'){
-                        print('Incorrect Password');
-                      }
-
-                      else if(e.code=='user-not-found'){
-                        print('This Email is Not registererd');
-                      }
-
-                      else{
-                        print('Something Went Wrong');  
-                      }
-                      
-
-
-                    }
-                    
-                  },
-                  child: Text(
-                    "Login",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              ),
-            ],
-          );
-
-                        default:
-                        return Text("Loading...");
-                      }
-                      
-                     
-                    },
-          
-        ),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.done:
+                    return Column(
+                      children: [
+                        TextField(
+                          controller: _email,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            border: OutlineInputBorder(),
+                          ),
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        SizedBox(height: 20), // Add some space between the text fields
+                        TextField(
+                          controller: _password,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            border: OutlineInputBorder(),
+                          ),
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          obscureText: true,
+                        ),
+                        SizedBox(height: 20),
+                        Center(
+                          child: Column(
+                            children: [
+                              TextButton(
+                                onPressed: () async {
+                                  final email = _email.text;
+                                  final password = _password.text;
+      
+                                  try {
+                                    final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                      email: email,
+                                      password: password,
+                                    );
+                                  } on FirebaseAuthException catch (e) {
+                                    print(e.code);
+                                    if (e.code == 'invalid-email') {
+                                      print('Your Email is Invalid');
+                                    } else if (e.code == 'wrong-password') {
+                                      print('Incorrect Password');
+                                    } else if (e.code == 'user-not-found') {
+                                      print('This Email is Not registered');
+                                    } else {
+                                      print('Something Went Wrong');
+                                    }
+                                  }
+                                },
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                              
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  default:
+                    return Text("Loading...");
+                }
+              },
+            ),
+          ),
+          Center(
+            child: TextButton(
+                         onPressed: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil('/register/', (route) => false);
+                            
+                             },
+                                    child: const Text('Register Here!'),
+                                  ),
+          ),
+        ],
       ),
     );
   }
-
-  
 }

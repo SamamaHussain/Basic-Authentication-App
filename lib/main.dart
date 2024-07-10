@@ -15,6 +15,10 @@ void main() {
         useMaterial3: true,
       ),
       home: const HomePage(),
+      routes:{
+        '/register/' : (context) => const RegisterView(),
+        '/login/' : (context) => const LoginView(),
+      },
     ),
   );
 }
@@ -24,13 +28,7 @@ class HomePage extends StatelessWidget {
 
  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Pakistan Zindabad Login Here"),
-        backgroundColor: Colors.blue,
-        titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
-      ),
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.all(8.0),
 
         child: FutureBuilder(
@@ -40,27 +38,58 @@ class HomePage extends StatelessWidget {
                     builder: (context, snapshot){
                       switch (snapshot.connectionState){
                         case ConnectionState.done:
-                        print(FirebaseAuth.instance.currentUser);
-                        User? user  = FirebaseAuth.instance.currentUser;
-
-                        if (user != null && user.emailVerified) {
-                          print('Email is Verified');
-                      } else {
-                       print('Email is Not Verified');
-                      }
                         
-                        return Text("Initialization Complete");
+                      //   print(FirebaseAuth.instance.currentUser);
+                      //   User? user  = FirebaseAuth.instance.currentUser;
+
+                      //   if (user?.emailVerified ?? false) {
+                      //     return const Text('Email is Verified');
+                      // } else {
+                      //  return const EmailVerificationView(); 
+                       
+                      // }
+                      print(FirebaseAuth.instance.currentUser);
+                      return const LoginView();
 
                         default:
-                        return Text("Loading...");
-                      } 
+                        return const CircularProgressIndicator();
+                      }
                     },
           
         ),
-      ),
-    );
+      );
   }
+
 }
+
+  class EmailVerificationView extends StatefulWidget {
+    const EmailVerificationView({super.key});
+
+    @override
+    State<EmailVerificationView> createState() => _EmailVerificationViewState();
+  }
+
+  class _EmailVerificationViewState extends State<EmailVerificationView> {
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Email Verification',
+          ),
+        ),
+        body: Column(children: [
+            const Text('Please check your email inbox'),
+            TextButton(onPressed: () async{
+              final user =FirebaseAuth.instance.currentUser;
+        
+              await user?.sendEmailVerification();
+            }, child: const Text("Send Email Verifaction Code"))
+          ],
+          ),
+      );
+    }
+  }
 
 
 

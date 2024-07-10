@@ -37,90 +37,75 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pakistan Zindabad"),
-        backgroundColor: Colors.blue,
-        titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+        title: const Text('Register Here'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-
-        child: FutureBuilder(
-          future: Firebase.initializeApp( 
-            options: DefaultFirebaseOptions.currentPlatform,
+      body: Column(
+                children: [
+                  TextField(
+                    controller: _email,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
                     ),
-                    builder: (context, snapshot) {
-
-                      switch (snapshot.connectionState){
-                        case ConnectionState.done:
-                        
-                         return Column(
-            children: [
-              TextField(
-                controller: _email,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                enableSuggestions: false,
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-              ),
-              SizedBox(height: 20), // Add some space between the text fields
-              TextField(
-                controller: _password,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-                enableSuggestions: false,
-                autocorrect: false,
-                obscureText: false,
-              ),
-              SizedBox(height: 20),
-              Center(
-                child: TextButton(
-                  onPressed: () async {
-                    
-          
-                    final email = _email.text;
-                    final password = _password.text;
-                    try{
-                      final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-                    }
-
-                    on FirebaseAuthException catch(e){
-                      print (e.code);
-                      if(e.code=='weak-password'){
-                        print('Your Password is Weak');
-                      }
-
-                      else if(e.code=='invalid-email'){
-                        print('Invalid Email');
-                      }
-                       else if(e.code=='email-already-in-use'){
-                        print('This Email is Already Registerd');
-                      }
-                    }
-                    
-                  },
-                  child: Text(
-                    "Register",
-                    style: TextStyle(fontSize: 18),
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    keyboardType: TextInputType.emailAddress,
                   ),
-                ),
-              ),
-            ],
-          );
-
-                        default:
-                        return Text("Loading...");
-                      }
-                      
-                     
-                    },
-          
+                  SizedBox(height: 20), // Add some space between the text fields
+                  TextField(
+                    controller: _password,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(),
+                    ),
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    obscureText: false,
+                  ),
+                  SizedBox(height: 20),
+                  Center(
+                    child: TextButton(
+                      onPressed: () async {
+                        
+              
+                        final email = _email.text;
+                        final password = _password.text;
+                        try{
+                          final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+                        }
+        
+                        on FirebaseAuthException catch(e){
+                          print (e.code);
+                          if(e.code=='weak-password'){
+                            print('Your Password is Weak');
+                          }
+        
+                          else if(e.code=='invalid-email'){
+                            print('Invalid Email');
+                          }
+                           else if(e.code=='email-already-in-use'){
+                            print('This Email is Already Registerd');
+                          }
+                        }
+                        
+                      },
+                      child: Text(
+                        "Register",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  Center(
+          child: TextButton(
+                       onPressed: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route) => false);
+                          
+                           },
+                                  child: const Text('Login If You Already Have an Account'),
+                                ),
         ),
-      ),
+                ],
+              ),
     );
   }
 }
