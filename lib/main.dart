@@ -11,15 +11,17 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 102, 57, 180)),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
+        useMaterial3: false
       ),
       home: const HomePage(),
       routes:{
         '/register/' : (context) => const RegisterView(),
         '/login/' : (context) => const LoginView(),
+        '/notes/' : (context) => const NotesView(),
       },
     ),
   );
@@ -31,7 +33,7 @@ class HomePage extends StatelessWidget {
  @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(0.0),
 
         child: FutureBuilder(
           future: Firebase.initializeApp( 
@@ -46,7 +48,8 @@ class HomePage extends StatelessWidget {
                      print(user);
                      if(user != null){
                       if(user.emailVerified){
-                        print('email is verified');
+                        // print('email is verified');
+                        devtools.log('email is verified');
                         return NotesView();
                       }
                       else{
