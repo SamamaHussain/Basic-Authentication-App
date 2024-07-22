@@ -20,9 +20,10 @@ void main() {
       ),
       home: const HomePage(),
       routes:{
-         notesRoute : (context) => const RegisterView(),
+         registerRoute : (context) => const RegisterView(),
         loginRoute : (context) => const LoginView(),
         notesRoute : (context) => const NotesView(),
+        verifyEmailRoute : (context) => const EmailVerificationView(),
       },
     ),
   );

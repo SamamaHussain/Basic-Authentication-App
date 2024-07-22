@@ -83,30 +83,38 @@ class _LoginViewState extends State<LoginView> {
                                   final password = _password.text;
       
                                   try {
-                                    final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                    final userCredential = await FirebaseAuth
+                                        .instance
+                                        .signInWithEmailAndPassword(
                                       email: email,
                                       password: password,
                                     );
-                                    Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false,);
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                      notesRoute,
+                                      (route) => false,
+                                    );
                                   } on FirebaseAuthException catch (e) {
                                     // print(e.code);
-                                    if (e.code == 'invalid-email') {                                     
-                                      // devtools.log('Your Email is Invalid');
-                                      await showdialogue(context, 'Your Email is Invalid');
+                                    if (e.code == 'invalid-email') {
+                                      await showdialogue(
+                                          context, 'Your Email is Invalid');
                                     } else if (e.code == 'wrong-password') {
-                                      // devtools.log('Incorrect Password');
-                                      await showdialogue(context, 'Incorrect Password');
-                                    } else if (e.code == 'Your Email is Invalid') {
-                                      // devtools.log('This Email is Not registered');
-                                      await showdialogue(context, 'This Email is Not registered');
+                                      await showdialogue(
+                                          context, 'Incorrect Password');
+                                    } else if (e.code ==
+                                        'Your Email is Invalid') {
+                                      await showdialogue(context,
+                                          'This Email is Not registered');
                                     } else {
-                                      // devtools.log('Something Went Wrong');
-                                      await showdialogue(context, 'Error: ${e.code}');
+                                      await showdialogue(
+                                          context, 'Error: ${e.code}');
                                     }
-                                  }
-                                  catch(e){
-                                    // devtools.log('Something Went Wrong');
-                                    await showdialogue(context, e.toString(),);
+                                  } catch (e) {
+                                    await showdialogue(
+                                      context,
+                                      e.toString(),
+                                    );
                                   }
                                 },
                                 child: Text(
@@ -128,12 +136,12 @@ class _LoginViewState extends State<LoginView> {
           ),
           Center(
             child: TextButton(
-                         onPressed: () {
-                          Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false,);
-                            
-                             },
-                                    child: const Text('Register Here!'),
-                                  ),
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  registerRoute, (route) => false, );
+              },
+              child: const Text('Register Here!'),
+            ),
           ),
         ],
       ),
