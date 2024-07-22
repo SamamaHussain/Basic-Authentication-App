@@ -5,6 +5,8 @@ import 'package:notesapp/constants/routes.dart';
 import 'package:notesapp/firebase_options.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:notesapp/utillities/show_error_dialog.dart';
+
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -88,19 +90,23 @@ class _LoginViewState extends State<LoginView> {
                                     Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false,);
                                   } on FirebaseAuthException catch (e) {
                                     // print(e.code);
-                                    if (e.code == 'invalid-email') {
-                                      // print('Your Email is Invalid');
-                                      devtools.log('Your Email is Invalid');
+                                    if (e.code == 'invalid-email') {                                     
+                                      // devtools.log('Your Email is Invalid');
+                                      await showdialogue(context, 'Your Email is Invalid');
                                     } else if (e.code == 'wrong-password') {
-                                      // print('Incorrect Password');
-                                      devtools.log('Incorrect Password');
-                                    } else if (e.code == 'user-not-found') {
-                                      // print('This Email is Not registered');
-                                      devtools.log('This Email is Not registered');
+                                      // devtools.log('Incorrect Password');
+                                      await showdialogue(context, 'Incorrect Password');
+                                    } else if (e.code == 'Your Email is Invalid') {
+                                      // devtools.log('This Email is Not registered');
+                                      await showdialogue(context, 'This Email is Not registered');
                                     } else {
-                                      // print('Something Went Wrong');
-                                      devtools.log('Something Went Wrong');
+                                      // devtools.log('Something Went Wrong');
+                                      await showdialogue(context, 'Error: ${e.code}');
                                     }
+                                  }
+                                  catch(e){
+                                    // devtools.log('Something Went Wrong');
+                                    await showdialogue(context, e.toString(),);
                                   }
                                 },
                                 child: Text(
@@ -134,3 +140,4 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+
