@@ -89,24 +89,32 @@ class _LoginViewState extends State<LoginView> {
                                       email: email,
                                       password: password,
                                     );
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil(
+                                    User? user=FirebaseAuth.instance.currentUser;
+
+                                    if(user?.emailVerified ?? false){
+                                      Navigator.of(context).pushNamedAndRemoveUntil(
                                       notesRoute,
                                       (route) => false,
                                     );
+
+                                    }
+                                    else{
+                                      Navigator.of(context).pushNamedAndRemoveUntil(
+                                      verifyEmailRoute,
+                                      (route) => false,
+                                      );
+                                    }
+
                                   } on FirebaseAuthException catch (e) {
-                                    // print(e.code);
-                                    if (e.code == 'invalid-email') {
+                                    print(e.code);
+                                    if (e.code == 'user-not-found') {
                                       await showdialogue(
-                                          context, 'Your Email is Invalid');
+                                          context, 'User Not Registerd');
                                     } else if (e.code == 'wrong-password') {
                                       await showdialogue(
                                           context, 'Incorrect Password');
-                                    } else if (e.code ==
-                                        'Your Email is Invalid') {
-                                      await showdialogue(context,
-                                          'This Email is Not registered');
-                                    } else {
+                                    }
+                                    else {
                                       await showdialogue(
                                           context, 'Error: ${e.code}');
                                     }
