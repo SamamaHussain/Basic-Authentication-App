@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:notesapp/constants/routes.dart';
-import 'package:notesapp/firebase_options.dart';
-import 'dart:developer' as devtools show log;
+import 'package:notesapp/services/auth/authExceptions.dart';
+import 'package:notesapp/services/auth/authServices.dart';
 
 import 'package:notesapp/utillities/show_error_dialog.dart';
 
@@ -44,9 +43,7 @@ class _LoginViewState extends State<LoginView> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: FutureBuilder(
-              future: Firebase.initializeApp(
-                options: DefaultFirebaseOptions.currentPlatform,
-              ),
+              future: authServices.firebase().initialize(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.done:
@@ -83,15 +80,10 @@ class _LoginViewState extends State<LoginView> {
                                   final password = _password.text;
       
                                   try {
-                                    final userCredential = await FirebaseAuth
-                                        .instance
-                                        .signInWithEmailAndPassword(
-                                      email: email,
-                                      password: password,
-                                    );
-                                    User? user=FirebaseAuth.instance.currentUser;
+                                    final userCredential = await authServices.firebase().login(email: email, password: password);
+                                    final user= authServices.firebase().currentUser;
 
-                                    if(user?.emailVerified ?? false){
+                                    if(user?.isEmailVerified ?? false){
                                       Navigator.of(context).pushNamedAndRemoveUntil(
                                       notesRoute,
                                       (route) => false,
@@ -105,24 +97,22 @@ class _LoginViewState extends State<LoginView> {
                                       );
                                     }
 
-                                  } on FirebaseAuthException catch (e) {
-                                    print(e.code);
-                                    if (e.code == 'user-not-found') {
+                                  }
+                                  
+                                  on UserNotFoundAuthException{
                                       await showdialogue(
                                           context, 'User Not Registerd');
-                                    } else if (e.code == 'wrong-password') {
-                                      await showdialogue(
+                                  }
+                                  
+                                  on WrongPasswordAuthException{
+                                       await showdialogue(
                                           context, 'Incorrect Password');
-                                    }
-                                    else {
+                                  }
+
+                                  on GenericAuthException{
                                       await showdialogue(
-                                          context, 'Error: ${e.code}');
-                                    }
-                                  } catch (e) {
-                                    await showdialogue(
                                       context,
-                                      e.toString(),
-                                    );
+                                      'Authentication Error',);
                                   }
                                 },
                                 child: Text(
