@@ -11,5 +11,5 @@ A Basic User Authentication For Flutter App using clean code and dependency inje
 # Email Verification Screen
 ![Screenshot 2024-08-12 190008](https://github.com/user-attachments/assets/5b8f266d-6f0b-485b-a823-6afff69e1258)
 
-# Registered Users
+# Registered Users on Firebase Console
 ![Screenshot 2024-08-12 190309](https://github.com/user-attachments/assets/6d23381b-215f-46e2-a32d-498db5e95108)
