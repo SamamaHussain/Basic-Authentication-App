@@ -1,2 +1,1 @@
-# NotesApp
-First Flutter Notes App from the Course.
+Flutter App made with clean code and dependency injection provides the services to authenticate the user using Firebase.
