@@ -1,4 +1,4 @@
-# flutter-app-auth
+# User Authentication For Flutter App
 
 A Basic Flutter Authentication App using clean code and dependency injection techniques with Firebase Authentication Services along with Email Verification.
 
