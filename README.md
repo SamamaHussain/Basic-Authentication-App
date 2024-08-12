@@ -1,6 +1,6 @@
 # User Authentication For Flutter App
 
-A Basic Flutter Authentication App using clean code and dependency injection techniques with Firebase Authentication Services along with Email Verification.
+A Basic User Authentication For Flutter App using clean code and dependency injection techniques with Firebase Authentication Services along with Email Verification.
 
 # Login Screen
 ![Screenshot 2024-08-12 185836](https://github.com/user-attachments/assets/c93fe980-87a9-43b4-9056-0fe25971170f)
